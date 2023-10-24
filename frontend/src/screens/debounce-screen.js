@@ -1,7 +1,5 @@
 import { connect } from 'react-redux';
 
-import { SetSearch } from '~/actions/home-actions';
-
 const DebounceScreen = (props) => {
     return (
         <>
@@ -15,8 +13,6 @@ const DebounceScreen = (props) => {
 };
 
 const mapStateToProps = (state) => ({});
-const mapDispatchToProps = (dispatch) => ({
-    Set_Search: (key, value) => dispatch(SetSearch(key, value)),
-});
+const mapDispatchToProps = (dispatch) => ({});
 
 export default connect(mapStateToProps, mapDispatchToProps)(DebounceScreen);

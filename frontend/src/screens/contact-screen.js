@@ -1,12 +1,11 @@
 import React from 'react';
 import { connect } from 'react-redux';
-
-import ContactComponent from '~/components/contact-component';
-
 import {
     IncreaseContainerCounter,
     SetContainerDetails,
-} from '~/reducers/container-reducer';
+} from '~/redux/slices/container-reducer';
+
+import ContactComponent from '~/components/contact-component';
 
 const ContactScreen = (props) => {
     return (

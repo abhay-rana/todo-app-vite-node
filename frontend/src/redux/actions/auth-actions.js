@@ -1,6 +1,5 @@
 import { createAsyncThunk } from '@reduxjs/toolkit';
-
-import { postApi } from '~/scripts/api-services';
+import { postApi } from '~/services/api-services';
 
 export const userSignIn = createAsyncThunk('sign/user', (payload) => {
     return postApi('')

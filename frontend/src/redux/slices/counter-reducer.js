@@ -1,6 +1,5 @@
 import { createSlice } from '@reduxjs/toolkit';
-
-import { ResetLocalState } from '~/reducers/container-reducer';
+import { ResetLocalState } from '~/redux/slices/container-reducer';
 
 const initialState = {
     counter: 0,

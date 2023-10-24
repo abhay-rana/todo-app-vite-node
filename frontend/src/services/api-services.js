@@ -1,6 +1,5 @@
 import axios from 'axios';
-
-import store from '~/reducers/store';
+import store from '~/redux/store';
 
 import { ProjectUrl } from '~/env';
 

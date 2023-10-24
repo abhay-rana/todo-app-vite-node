@@ -14,7 +14,7 @@
         "es6": true
     },
     "rules": {
-        "react/prop-types": "warn",
+        "react/prop-types": "off",
         "no-await-in-loop": "error",
         "no-constant-binary-expression": "error",
         "no-duplicate-imports": "error",

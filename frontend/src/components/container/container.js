@@ -3,13 +3,20 @@ import { memo } from 'react';
 
 import ErrorBoundary from '~/components/container/error-boundary';
 
-const Container = ({ children }) => {
+const Container = ({ children, is_login }) => {
     return (
         <ErrorBoundary>
-            {/* <Header /> */}
-            {/* <Sidebar /> */}
-            {children}
-            {/* <Footer /> */}
+            {!is_login ? (
+                <>
+                    {/* auth routes */}
+                    {children}
+                </>
+            ) : (
+                <>
+                    {/* App routes */}
+                    {children}
+                </>
+            )}
         </ErrorBoundary>
     );
 };
