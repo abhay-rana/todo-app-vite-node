@@ -1,0 +1,15 @@
+{
+    "compilerOptions": {
+        // "allowJs": true,
+        // "checkJs": true,
+        "jsx": "react-jsx",
+        "baseUrl": ".",
+        "paths": {
+            "~/*": ["src/*"]
+        }
+    },
+    "exclude": ["node_modules", "build"]
+}
+
+// do this in the vscode-setting
+// "javascript.preferences.importModuleSpecifier": "non-relative"

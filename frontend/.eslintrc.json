@@ -1,0 +1,97 @@
+{
+    "parser": "@babel/eslint-parser",
+    "extends": [
+        "eslint:recommended",
+        "plugin:react/recommended",
+        "plugin:import/recommended",
+        "plugin:jsx-a11y/recommended",
+        "eslint-config-prettier"
+    ],
+    "env": {
+        // this is for the "document" and "window" global object
+        "browser": true,
+        "node": true,
+        "es6": true
+    },
+    "rules": {
+        "react/prop-types": "warn",
+        "no-await-in-loop": "error",
+        "no-constant-binary-expression": "error",
+        "no-duplicate-imports": "error",
+        "no-new-native-nonconstructor": "error",
+        "no-promise-executor-return": "error",
+        "no-self-compare": "error",
+        "no-template-curly-in-string": "error",
+        "no-unmodified-loop-condition": "error",
+        "no-unreachable-loop": "error",
+        "no-unused-private-class-members": "error",
+        "no-use-before-define": "error",
+        "react/react-in-jsx-scope": "off",
+        "no-extra-boolean-cast": "off",
+        "no-unused-vars": [
+            "warn",
+            {
+                "vars": "all",
+                "varsIgnorePattern": "^_",
+                "args": "after-used",
+                "argsIgnorePattern": "action|getState"
+            }
+        ],
+        "unused-imports/no-unused-imports": "warn",
+        "unused-imports/no-unused-vars": [
+            "warn",
+            {
+                "vars": "all",
+                "varsIgnorePattern": "^_",
+                "args": "after-used",
+                "argsIgnorePattern": "action|getState"
+            }
+        ],
+        "unicorn/filename-case": [
+            "error",
+            {
+                "cases": {
+                    "kebabCase": true,
+                    "camelCase": true
+                },
+                "ignore": ["\\.stories\\.js$"]
+            }
+        ],
+        "unicorn/prevent-abbreviations": [
+            "error",
+            {
+                "replacements": {
+                    "e": {
+                        "event": false
+                    },
+                    "res": false,
+                    "cmd": {
+                        "command": true
+                    },
+                    "errCb": {
+                        "handleError": true
+                    },
+                    "i": {
+                        "item": true
+                    },
+                    "props": false,
+                    "env": false
+                }
+            }
+        ]
+    },
+    "plugins": ["react", "unused-imports", "unicorn"],
+
+    "parserOptions": {
+        "sourceType": "module",
+        "requireConfigFile": false // <== ADD THIS
+    },
+    "settings": {
+        "react": {
+            "version": "detect"
+        },
+        "import/resolver": {
+            "alias": [["~", "./src"]]
+        }
+    }
+}

@@ -1,0 +1,30 @@
+/* "base": for resetting the css and style the native elements */
+@tailwind base;
+/* "components": for style your own custom classes */
+@tailwind components;
+/* "utilities": for styling of the classes provided by the tailwind */
+@tailwind utilities;
+
+@layer components {
+    /* always set this like this html and body element */
+    html,
+    body {
+        background-color: #ffffff;
+        font-family: 'Poppins', sans-serif;
+        min-height: 100vh;
+        width: 100%;
+    }
+
+    #root {
+        height: 100vh;
+        width: 100%;
+    }
+    /* min-height is not inherited by the child  so we have replace the min-height by the height property */
+    h1 {
+        @apply text-12 font-bold;
+    }
+
+    a {
+        @apply text-blue-600 underline decoration-wavy underline-offset-2 transition hover:text-red-500;
+    }
+}
