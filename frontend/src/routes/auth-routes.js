@@ -3,6 +3,8 @@ import { Route, Router, Switch } from 'wouter';
 import LoginScreen from '~/screens/login-screen';
 import SignupScreen from '~/screens/signup-screen';
 
+import ErrorScreen from '~/components/container/404';
+
 const AuthRoutes = () => {
     return (
         <>
@@ -10,6 +12,7 @@ const AuthRoutes = () => {
                 <Switch>
                     <Route path="/login" component={LoginScreen} />
                     <Route path="/signup" component={SignupScreen} />
+                    <Route component={ErrorScreen} />
                 </Switch>
             </Router>
         </>
