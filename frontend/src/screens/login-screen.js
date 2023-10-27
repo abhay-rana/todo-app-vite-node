@@ -1,17 +1,36 @@
 import { useState } from 'react';
+import { useLocation } from 'wouter';
+import { postApi } from '~/services/api-services';
 
 import Button from '~/components/button/button';
+
+function setToken(access_token, refresh_token) {
+    console.log('access_token', { access_token, refresh_token });
+    window.localStorage.setItem('token', access_token);
+    window.localStorage.setItem('refresh_token', refresh_token);
+}
 
 const LoginScreen = () => {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
+    const [location, setLocation] = useLocation();
 
     function setInputValue(key, value) {
         if (key === 'email') setEmail(value);
         else if (key === 'password') setPassword(value);
     }
 
-    function handleLogin() {}
+    function handleLogin(type) {
+        if (type === 'signup') {
+            setLocation('/signup');
+        } else if (type === 'login') {
+            postApi('/login', { email, password }).then((data) => {
+                console.log('data', data);
+                setToken(data.data.token, data.data.refresh_token);
+                setLocation('/home');
+            });
+        }
+    }
 
     return (
         <div className="flex h-screen w-screen flex-col items-center justify-center gap-2 bg-red-50">
@@ -34,8 +53,9 @@ const LoginScreen = () => {
                     }
                 />
             </div>
-            <div>
-                <Button onClick={handleLogin}>Login</Button>
+            <div className="flex flex-row gap-2">
+                <Button onClick={() => handleLogin('login')}>Login</Button>
+                <Button onClick={() => handleLogin('signup')}>Signup</Button>
             </div>
         </div>
     );

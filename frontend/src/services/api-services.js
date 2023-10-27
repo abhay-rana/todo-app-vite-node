@@ -1,4 +1,5 @@
 import axios from 'axios';
+
 import store from '~/redux/store';
 
 import { ProjectUrl } from '~/env';
@@ -19,8 +20,8 @@ const api = axios.create({
 
 api.interceptors.request.use(
     async (config) => {
-        let token = store.getState().auth_store.token;
-        //console.log("Token", token);
+        let token = window.localStorage.getItem('token');
+        console.log('Token', token);
         if (token) {
             config.headers.Authorization = 'Bearer ' + token;
         }
@@ -28,6 +29,7 @@ api.interceptors.request.use(
     },
 
     (error) => {
+        console.log('error', error);
         return Promise.reject(error);
     }
 );
@@ -47,13 +49,13 @@ export const postApi = async (
             .catch((error) => {
                 //! NOTE - use "error.response.data` (not "error")
                 console.log('hey post api error');
-                console.log(error.response.data);
+                console.log(error.response?.data);
                 // if (error.response.status === 401) {
                 //     store.getState().auth.email &&
                 //         store.dispatch(userForceSignOut());
                 //     return;
                 // }
-                return reject(error.response.data);
+                return reject(error.response?.data);
             });
         api.get;
     });

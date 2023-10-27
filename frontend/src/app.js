@@ -26,7 +26,7 @@ const App = (props) => {
 };
 
 const mapStateToProps = (state) => ({
-    is_login: false,
+    is_login: state.auth_store.is_login,
 });
 
 export default connect(mapStateToProps, null)(App);
