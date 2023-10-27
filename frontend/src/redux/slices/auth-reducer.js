@@ -11,7 +11,13 @@ const initialState = {
 const authSlice = createSlice({
     name: 'auth',
     initialState,
-    reducer: {},
+    reducers: {
+        Logout: (state) => {
+            console.log('state', state);
+            state.is_login = false;
+            state.role = '';
+        },
+    },
     extraReducers: (builder) => {
         builder.addCase(userSignIn.fulfilled, (state) => {
             state.is_login = true;
@@ -19,5 +25,5 @@ const authSlice = createSlice({
     },
 });
 
-export const { setLogin } = authSlice.actions;
+export const { setLogin, Logout } = authSlice.actions;
 export default authSlice.reducer;

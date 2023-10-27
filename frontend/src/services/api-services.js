@@ -1,5 +1,6 @@
 import axios from 'axios';
 
+import { Logout } from '~/redux/slices/auth-reducer';
 import store from '~/redux/store';
 
 import { ProjectUrl } from '~/env';
@@ -13,7 +14,7 @@ const api = axios.create({
 //* 5xx ->  server side error
 //** Axios reject the response if the status code belongs to 5xx and 4xx */
 //! 401 Unauthorized -> you are not login
-//! 403 Forbidden    ->    you are login but not have permissions
+//! 403 Forbidden    ->    you are login but not have permissions, token expired
 //! 400 Bad Request  -> error from client side check your arguments in body
 //! 404 Not Found    -> endpoint does not exist
 //! 500 Internal Server Error  -> error from the server side
@@ -27,12 +28,43 @@ api.interceptors.request.use(
         }
         return config;
     },
-
     (error) => {
         console.log('error', error);
         return Promise.reject(error);
     }
 );
+
+api.interceptors.response.use(
+    (response) => response,
+    async function (error) {
+        const originalRequest = error.config;
+        console.log('error response', error.response.status);
+        // If the error status is 403 and there is no originalRequest._retry flag,
+        // it means the token has expired and we need to refresh it
+        if (error.response.status === 403 && !originalRequest._retry) {
+            originalRequest._retry = true;
+            try {
+                const refresh_token = localStorage.getItem('refresh_token');
+                const response = await axios.get('/api/refresh-token', {
+                    headers: { Authorization: `Bearer ${refresh_token}` },
+                });
+                const { token } = response.data;
+
+                localStorage.setItem('token', token);
+                // Retry the original request with the new token
+                originalRequest.headers.Authorization = `Bearer ${token}`;
+                return axios(originalRequest);
+            } catch (error) {
+                // Handle refresh token error or redirect to login
+            }
+        } else if (error.response.status === 401) {
+            store.dispatch(Logout());
+        }
+
+        return Promise.reject(error);
+    }
+);
+
 export const postApi = async (
     path,
     data = {},
@@ -57,16 +89,16 @@ export const postApi = async (
                 // }
                 return reject(error.response?.data);
             });
-        api.get;
     });
     return result;
 };
 
-export const getApi = async (path, data = {}) => {
+export const getApi = async (path) => {
     var result = await new Promise((resolve, reject) => {
-        api.get(path, data)
+        api.get(path)
             .then((response) => resolve(response.data))
             .catch((error) => {
+                console.log('error', error);
                 // if (error.response.status === 401) {
                 //     store.getState().auth.email &&
                 //         store.dispatch(userForceSignOut());
@@ -75,7 +107,6 @@ export const getApi = async (path, data = {}) => {
 
                 return reject(error.response.data);
             });
-        api.get;
     });
     return result;
 };

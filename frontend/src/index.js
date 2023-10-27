@@ -15,7 +15,7 @@ function resetLocalState() {
 }
 
 ReactDOM.createRoot(document.getElementById('root')).render(
-    <React.StrictMode>
+    <>
         <Provider store={store}>
             <PersistGate
                 loading={<p>Loading...</p>}
@@ -27,5 +27,5 @@ ReactDOM.createRoot(document.getElementById('root')).render(
             </PersistGate>
             {/* <ClickToComponent /> */}
         </Provider>
-    </React.StrictMode>
+    </>
 );

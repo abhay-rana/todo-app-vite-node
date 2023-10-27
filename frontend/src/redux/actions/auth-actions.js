@@ -1,10 +1,10 @@
 import { createAsyncThunk } from '@reduxjs/toolkit';
-import { postApi } from '~/services/api-services';
+import { getApi, postApi } from '~/services/api-services';
 
 import Alertify from '~/scripts/alertify';
 
 function setToken(access_token, refresh_token) {
-    console.log('access_token', { access_token, refresh_token });
+    console.log('token', { access_token, refresh_token });
     window.localStorage.setItem('token', access_token);
     window.localStorage.setItem('refresh_token', refresh_token);
 }
@@ -22,3 +22,9 @@ export const userSignIn = createAsyncThunk(
 );
 
 export const Logout = createAsyncThunk('logout', () => {});
+
+export const ProtectedRoutes = createAsyncThunk('login/user', () => {
+    return getApi('/protected')
+        .then((data) => console.log('Data', data))
+        .catch((error) => console.log('err', error));
+});

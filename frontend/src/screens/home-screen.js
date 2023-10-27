@@ -1,10 +1,14 @@
-import PropTypes from 'prop-types';
 import { useEffect } from 'react';
 import { toast } from 'react-hot-toast';
-import { connect } from 'react-redux';
-import { useLocation } from 'wouter';
+import { connect, useDispatch } from 'react-redux';
+
+import { ProtectedRoutes } from '~/redux/actions/auth-actions';
 
 const HomeScreen = (props) => {
+    const dispatch = useDispatch();
+    useEffect(() => {
+        dispatch(ProtectedRoutes());
+    }, []);
     return (
         <>
             <div className="flex flex-col border-2 border-black">
