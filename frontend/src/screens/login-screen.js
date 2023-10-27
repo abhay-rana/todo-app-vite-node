@@ -1,19 +1,17 @@
 import { useState } from 'react';
+import { useDispatch } from 'react-redux';
 import { useLocation } from 'wouter';
 import { postApi } from '~/services/api-services';
 
 import Button from '~/components/button/button';
 
-function setToken(access_token, refresh_token) {
-    console.log('access_token', { access_token, refresh_token });
-    window.localStorage.setItem('token', access_token);
-    window.localStorage.setItem('refresh_token', refresh_token);
-}
+import { userSignIn } from '~/redux/actions/auth-actions';
 
 const LoginScreen = () => {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
-    const [location, setLocation] = useLocation();
+    const [_, setLocation] = useLocation();
+    const dispatch = useDispatch();
 
     function setInputValue(key, value) {
         if (key === 'email') setEmail(value);
@@ -24,11 +22,9 @@ const LoginScreen = () => {
         if (type === 'signup') {
             setLocation('/signup');
         } else if (type === 'login') {
-            postApi('/login', { email, password }).then((data) => {
-                console.log('data', data);
-                setToken(data.data.token, data.data.refresh_token);
-                setLocation('/home');
-            });
+            dispatch(userSignIn({ email, password })).then(() =>
+                setLocation('/home')
+            );
         }
     }
 

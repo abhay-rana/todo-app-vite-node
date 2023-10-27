@@ -13,6 +13,8 @@ const App = (props) => {
     useEffect(() => {
         if (!props.is_login) {
             setLocation('/login');
+        } else if (props.is_login && location === '/') {
+            setLocation('/home');
         }
     }, [props.is_login]);
 

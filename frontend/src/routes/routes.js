@@ -9,7 +9,7 @@ const Routes = () => {
         <Router>
             <React.Suspense fallback={<h1>Loading....</h1>}>
                 <Switch>
-                    <Route exact path="/" component={HomeScreen} />
+                    <Route exact path="/home" component={HomeScreen} />
 
                     {/* if none of the route is matched */}
                     <Route component={ErrorScreen} />
