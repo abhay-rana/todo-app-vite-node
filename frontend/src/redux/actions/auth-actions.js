@@ -46,7 +46,13 @@ export const ChangePasswordDatabase = createAsyncThunk(
             confirm_password,
             old_password,
         })
-            .then((data) => console.log(data))
-            .catch((error) => console.error(error));
+            .then((data) => {
+                console.log(data);
+                Alertify.success(data.data.message);
+            })
+            .catch((error) => {
+                console.error(error);
+                Alertify.error(error.message);
+            });
     }
 );

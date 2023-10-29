@@ -19,7 +19,9 @@ const Header = () => {
     return (
         <>
             <div className="flex flex-row justify-between p-6">
-                <div>Logo</div>
+                <div>
+                    <button onClick={() => setLocation('/home')}>Logo</button>
+                </div>
                 <div className="flex flex-row gap-4">
                     <button
                         onClick={changePassword}
