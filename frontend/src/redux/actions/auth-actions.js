@@ -1,19 +1,11 @@
 import { createAsyncThunk } from '@reduxjs/toolkit';
+
 import { getApi, postApi } from '~/services/api-services';
+
+import { removeToken, setToken } from '~/utils/set-tokens';
 
 import Alertify from '~/scripts/alertify';
 
-function setToken(access_token, refresh_token) {
-    console.log('token', { access_token, refresh_token });
-    window.localStorage.setItem('token', access_token);
-    window.localStorage.setItem('refresh_token', refresh_token);
-}
-
-function removeToken() {
-    window.localStorage.removeItem('token');
-    window.localStorage.removeItem('refresh_token');
-    console.log('delete the tokens');
-}
 export const userSignIn = createAsyncThunk(
     'login/user',
     async ({ email, password }) => {
