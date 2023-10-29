@@ -11,11 +11,8 @@ const App = (props) => {
     const [location, setLocation] = useLocation();
 
     useEffect(() => {
-        console.log('changes');
         if (!props.is_login) {
-            console.log('enter');
             setLocation('/login');
-            console.log('hello');
         } else if (props.is_login && location === '/') {
             setLocation('/home');
         }

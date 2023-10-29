@@ -22,7 +22,6 @@ const api = axios.create({
 api.interceptors.request.use(
     async (config) => {
         let token = window.localStorage.getItem('token');
-        console.log('Token', token);
         if (token) {
             config.headers.Authorization = 'Bearer ' + token;
         }
@@ -58,7 +57,10 @@ api.interceptors.response.use(
                 // Handle refresh token error or redirect to login
             }
         } else if (error.response.status === 401) {
-            store.dispatch(Logout());
+            let token = window.localStorage.getItem('token');
+            if (token) {
+                store.dispatch(Logout());
+            }
         }
 
         return Promise.reject(error);
