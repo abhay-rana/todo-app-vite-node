@@ -1,11 +1,12 @@
 import { useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { useLocation } from 'wouter';
-import { postApi } from '~/services/api-services';
 
 import Button from '~/components/button/button';
 
 import { userSignIn } from '~/redux/actions/auth-actions';
+
+import { postApi } from '~/services/api-services';
 
 const LoginScreen = () => {
     const [email, setEmail] = useState('');

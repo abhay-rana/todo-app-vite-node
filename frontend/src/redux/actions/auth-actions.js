@@ -37,3 +37,16 @@ export const ProtectedRoutes = createAsyncThunk('login/user', () => {
         .then((data) => console.log('Data', data))
         .catch((error) => console.log('err', error));
 });
+
+export const ChangePasswordDatabase = createAsyncThunk(
+    '/changePassword',
+    ({ password, confirm_password, old_password }) => {
+        return postApi('/change-password', {
+            password,
+            confirm_password,
+            old_password,
+        })
+            .then((data) => console.log(data))
+            .catch((error) => console.error(error));
+    }
+);

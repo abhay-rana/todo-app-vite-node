@@ -12,13 +12,25 @@ const Header = () => {
         dispatch(Logout()).then(() => setLocation('/login'));
     }
 
+    function changePassword() {
+        setLocation('/change-password');
+    }
+
     return (
         <>
             <div className="flex flex-row justify-between p-6">
                 <div>Logo</div>
-                <button onClick={logout} className="bg-warning p-4 text-18">
-                    Logout
-                </button>
+                <div className="flex flex-row gap-4">
+                    <button
+                        onClick={changePassword}
+                        className="bg-blue-300 p-2"
+                    >
+                        Change Password
+                    </button>
+                    <button onClick={logout} className="bg-warning p-2">
+                        Logout
+                    </button>
+                </div>
             </div>
         </>
     );

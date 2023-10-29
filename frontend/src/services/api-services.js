@@ -14,7 +14,7 @@ const api = axios.create({
 //* 5xx ->  server side error
 //** Axios reject the response if the status code belongs to 5xx and 4xx */
 //! 401 Unauthorized -> you are not login
-//! 403 Forbidden    ->    you are login but not have permissions, Access Token expired
+//! 403 Forbidden    -> you are login but not have permissions, Access Token expired
 //! 400 Bad Request  -> error from client side check your arguments in body
 //! 404 Not Found    -> endpoint does not exist
 //! 500 Internal Server Error  -> error from the server side
@@ -40,6 +40,7 @@ api.interceptors.response.use(
         console.log('error response', error.response.status);
         // If the error status is 403 and there is no originalRequest._retry flag,
         // it means the token has expired and we need to refresh it
+
         if (error.response.status === 403 && !originalRequest._retry) {
             originalRequest._retry = true;
             try {
@@ -59,6 +60,15 @@ api.interceptors.response.use(
         } else if (error.response.status === 401) {
             let token = window.localStorage.getItem('token');
             if (token) {
+                store.dispatch(Logout());
+            }
+        }
+        //! token is expired both Access and refresh token
+        else if (error.response.status === 403) {
+            console.log('hello');
+            let token = window.localStorage.getItem('token');
+            if (token) {
+                console.log('hello');
                 store.dispatch(Logout());
             }
         }
@@ -84,11 +94,13 @@ export const postApi = async (
                 //! NOTE - use "error.response.data` (not "error")
                 console.log('hey post api error');
                 console.log(error.response?.data);
-                // if (error.response.status === 401) {
-                //     store.getState().auth.email &&
-                //         store.dispatch(userForceSignOut());
-                //     return;
-                // }
+                if (error.response.status === 403) {
+                    let token = window.localStorage.getItem('token');
+                    if (token) {
+                        console.log('hello');
+                        store.dispatch(Logout());
+                    }
+                }
                 return reject(error.response?.data);
             });
     });
@@ -101,11 +113,13 @@ export const getApi = async (path) => {
             .then((response) => resolve(response.data))
             .catch((error) => {
                 console.log('error', error);
-                // if (error.response.status === 401) {
-                //     store.getState().auth.email &&
-                //         store.dispatch(userForceSignOut());
-                //     return;
-                // }
+                if (error.response.status === 403) {
+                    let token = window.localStorage.getItem('token');
+                    if (token) {
+                        console.log('hello');
+                        store.dispatch(Logout());
+                    }
+                }
 
                 return reject(error.response.data);
             });

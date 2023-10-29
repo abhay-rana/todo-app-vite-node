@@ -16,7 +16,7 @@ const App = (props) => {
         } else if (props.is_login && location === '/') {
             setLocation('/home');
         }
-    }, [props.is_login, location]);
+    }, [props.is_login]);
 
     return (
         <>
