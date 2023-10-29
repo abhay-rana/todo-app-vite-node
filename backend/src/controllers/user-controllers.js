@@ -48,7 +48,7 @@ export async function LoginUser(req,res){
 export async function GenerateNewAccessToken(req,res){
     try{
         const {user}=req
-        const token=jwt.sign({id:user._id,username:user.username},JWT_TOKEN,{expiresIn: "30s"});
+        const token=jwt.sign({id:user._id,username:user.username},JWT_TOKEN,{expiresIn: "5m"});
         return res.status(201).send(token)
     }catch(err){
         console.error("Generate Access Token:",err)
@@ -92,4 +92,15 @@ export async function ChangePassword(req,res){
     }catch(error){
         console.error("error",error)
     }
+}
+
+export async function LogoutUser(req,res){
+    try{
+        res.json({
+                message:"You are successfully logout"
+            })
+    }catch(err){
+        console.log(err)
+    }
+     
 }
