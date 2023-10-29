@@ -8,6 +8,12 @@ function setToken(access_token, refresh_token) {
     window.localStorage.setItem('token', access_token);
     window.localStorage.setItem('refresh_token', refresh_token);
 }
+
+function removeToken() {
+    window.localStorage.removeItem('token');
+    window.localStorage.removeItem('refresh_token');
+    console.log('delete the tokens');
+}
 export const userSignIn = createAsyncThunk(
     'login/user',
     async ({ email, password }) => {
@@ -17,11 +23,22 @@ export const userSignIn = createAsyncThunk(
                 setToken(data.data.token, data.data.refresh_token);
                 Alertify.success('User successfully logged in');
             })
-            .catch((error) => console.error('err', error));
+            .catch((error) => {
+                console.error('err', error);
+                Alertify.error(error.message);
+                return Promise.reject();
+            });
     }
 );
 
-export const Logout = createAsyncThunk('logout', () => {});
+export const Logout = createAsyncThunk('logout', () => {
+    return getApi('/logout')
+        .then((data) => {
+            console.log('data', data);
+            removeToken();
+        })
+        .catch((error) => console.log('error', error));
+});
 
 export const ProtectedRoutes = createAsyncThunk('login/user', () => {
     return getApi('/protected')

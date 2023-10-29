@@ -8,15 +8,18 @@ import Routes from '~/routes/routes';
 import Container from '~/components/container/container';
 
 const App = (props) => {
-    const [location, setLocation] = useLocation('');
+    const [location, setLocation] = useLocation();
 
     useEffect(() => {
+        console.log('changes');
         if (!props.is_login) {
+            console.log('enter');
             setLocation('/login');
+            console.log('hello');
         } else if (props.is_login && location === '/') {
             setLocation('/home');
         }
-    }, [props.is_login]);
+    }, [props.is_login, location]);
 
     return (
         <>

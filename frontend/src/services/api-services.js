@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-import { Logout } from '~/redux/slices/auth-reducer';
+import { Logout } from '~/redux/actions/auth-actions';
 import store from '~/redux/store';
 
 import { ProjectUrl } from '~/env';
@@ -14,7 +14,7 @@ const api = axios.create({
 //* 5xx ->  server side error
 //** Axios reject the response if the status code belongs to 5xx and 4xx */
 //! 401 Unauthorized -> you are not login
-//! 403 Forbidden    ->    you are login but not have permissions, token expired
+//! 403 Forbidden    ->    you are login but not have permissions, Access Token expired
 //! 400 Bad Request  -> error from client side check your arguments in body
 //! 404 Not Found    -> endpoint does not exist
 //! 500 Internal Server Error  -> error from the server side
@@ -45,7 +45,7 @@ api.interceptors.response.use(
             originalRequest._retry = true;
             try {
                 const refresh_token = localStorage.getItem('refresh_token');
-                const response = await axios.get('/api/refresh-token', {
+                const response = await axios.get(`${ProjectUrl}/refresh`, {
                     headers: { Authorization: `Bearer ${refresh_token}` },
                 });
                 const { token } = response.data;

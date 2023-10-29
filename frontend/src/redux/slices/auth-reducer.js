@@ -1,6 +1,6 @@
 import { createSlice } from '@reduxjs/toolkit';
 
-import { userSignIn } from '~/redux/actions/auth-actions';
+import { Logout, userSignIn } from '~/redux/actions/auth-actions';
 
 const initialState = {
     is_login: false,
@@ -11,19 +11,16 @@ const initialState = {
 const authSlice = createSlice({
     name: 'auth',
     initialState,
-    reducers: {
-        Logout: (state) => {
-            console.log('state', state);
-            state.is_login = false;
-            state.role = '';
-        },
-    },
+    reducers: {},
     extraReducers: (builder) => {
         builder.addCase(userSignIn.fulfilled, (state) => {
             state.is_login = true;
         });
+        builder.addCase(Logout.fulfilled, (state) => {
+            state.is_login = false;
+        });
     },
 });
 
-export const { setLogin, Logout } = authSlice.actions;
+export const { setLogin } = authSlice.actions;
 export default authSlice.reducer;

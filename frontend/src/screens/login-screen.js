@@ -22,9 +22,10 @@ const LoginScreen = () => {
         if (type === 'signup') {
             setLocation('/signup');
         } else if (type === 'login') {
-            dispatch(userSignIn({ email, password })).then(() =>
-                setLocation('/home')
-            );
+            dispatch(userSignIn({ email, password }))
+                .unwrap()
+                .then(() => setLocation('/home'))
+                .catch();
         }
     }
 
