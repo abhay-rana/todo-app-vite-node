@@ -1,11 +1,14 @@
 import { useState } from 'react';
-import { postApi } from '~/services/api-services';
+import { useLocation } from 'wouter';
 
 import Button from '~/components/button/button';
+
+import { postApi } from '~/services/api-services';
 
 import Alertify from '~/scripts/alertify';
 
 const SignupScreen = () => {
+    const [_, setLocation] = useLocation();
     const [register, setRegisterValue] = useState({
         email: '',
         username: '',
@@ -21,7 +24,12 @@ const SignupScreen = () => {
                 username: register.username,
                 email: register.email,
                 password: register.password,
-            });
+            })
+                .then(() => {
+                    Alertify.success('successfully user has been created');
+                    setLocation('/login');
+                })
+                .catch();
         } else {
             Alertify.error('password are not same');
         }

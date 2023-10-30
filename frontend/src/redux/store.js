@@ -4,6 +4,7 @@ import storage from 'redux-persist/lib/storage';
 
 import authReducer from '~/redux/slices/auth-reducer';
 import containerReducer from '~/redux/slices/container-reducer';
+import todoReducer from '~/redux/slices/todo-reducer';
 
 import { APP_MODE } from '~/env';
 
@@ -16,6 +17,7 @@ const persistConfig = {
 const reducers = combineReducers({
     container_store: containerReducer,
     auth_store: authReducer,
+    todos_store: todoReducer,
 });
 
 const persistedReducer = persistReducer(persistConfig, reducers);

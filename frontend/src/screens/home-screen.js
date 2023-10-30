@@ -1,54 +1,51 @@
-import { useEffect } from 'react';
-import { toast } from 'react-hot-toast';
-import { connect, useDispatch } from 'react-redux';
+import { useEffect, useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 
-import { ProtectedRoutes } from '~/redux/actions/auth-actions';
+import { GetTodos } from '~/redux/actions/todos-actions';
 
-const HomeScreen = (props) => {
+const HomeScreen = () => {
     const dispatch = useDispatch();
+
+    const store = useSelector((state) => ({
+        todos: state.todos_store.todos,
+        search_todos: state.todos_store.search_todos,
+    }));
+
+    const [todo, setTodo] = useState({
+        id: '',
+        text: '',
+    });
+    const [search, setSearch] = useState('');
     useEffect(() => {
-        dispatch(ProtectedRoutes());
+        dispatch(GetTodos({ search }));
     }, []);
     return (
         <>
-            <div className="flex flex-col border-2 border-black">
-                This is HomeScreen running on vercel Yes Man..
-                <div className="flex w-24 cursor-pointer flex-col gap-4"></div>
-                <div>
-                    <div className="">Counter Applications</div>
-                    <button
-                        onClick={() => props.Increment_Counter()}
-                        className="rounded-lg bg-red-400 p-2"
-                    >
-                        +
-                    </button>
-                    {props.counter}
-                    <button
-                        onClick={() => props.Decrement_Counter()}
-                        className="rounded-lg bg-green-400 p-2"
-                    >
-                        -
-                    </button>
+            <div className="flex flex-col items-center justify-center gap-6">
+                <div>Todo App:-</div>
+                <div className="flex flex-row gap-4">
+                    <p>Enter Todo</p>
+                    <input
+                        value={todo.text}
+                        onChange={(event) =>
+                            setTodo({ ...todo, text: event.target.value })
+                        }
+                        placeholder="Enter Todo"
+                    />
                 </div>
-                <div className="flex flex-col border-1 border-red-500">
-                    <div className="text-center">Toast renderings</div>
-                    <div className="flex flex-row gap-4">
-                        <button
-                            onClick={() => {
-                                toast.dismiss();
-                                toast('message');
-                            }}
-                        >
-                            normal toast
-                        </button>
-                    </div>
+                <div className="flex flex-row gap-4">
+                    <p>Search Todo</p>
+                    <input
+                        value={search}
+                        onChange={(event) => setSearch(event.target.value)}
+                        placeholder="Search Todo"
+                    />
                 </div>
+                <div>Show Todo : </div>
+                {}
             </div>
         </>
     );
 };
 
-const mapStateToProps = (state) => ({});
-const mapDispatchToProps = (dispatch) => ({});
-
-export default connect(null, null)(HomeScreen);
+export default HomeScreen;
