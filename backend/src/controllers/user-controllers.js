@@ -35,7 +35,7 @@ export async function LoginUser(req,res){
                 })
             }else{
                 // const token=jwt.sign({id:user._id,username:user.username},JWT_TOKEN,{expiresIn: "30s"});
-                const token=jwt.sign({id:user._id,username:user.username},JWT_TOKEN);
+                const token=jwt.sign({id:user._id,username:user.username},JWT_TOKEN,{expiresIn:"1d"});
                 // const refresh_token=jwt.sign({id:user._id,username:user.username},JWT_REFRESH_TOKEN,{expiresIn: "1m"});
                 const refresh_token=jwt.sign({id:user._id,username:user.username},JWT_REFRESH_TOKEN,{expiresIn:"5d"});
                 const {password,...restParams}=user._doc

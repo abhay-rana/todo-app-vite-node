@@ -6,6 +6,7 @@ import { connectDb } from "./src/config/db.js";
 
 import user_routes from "./src/routes/user-routes.js";
 import { Authorize } from "./src/middlewares/authorize-middleware.js";
+import todo_routes from "./src/routes/todo-routes.js";
 
 const app=express();
 
@@ -23,7 +24,8 @@ app.use(
 //! for parse all the data in the body request 
 app.use(express.json());
 //! routes 
-app.use("/",user_routes)
+app.use("/",user_routes);
+app.use("/",todo_routes)
 
 app.get("/",(req,res)=>{
     res.send(`<h1>hello there</h1>`)

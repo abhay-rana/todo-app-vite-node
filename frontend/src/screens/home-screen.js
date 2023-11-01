@@ -15,10 +15,13 @@ const HomeScreen = () => {
         id: '',
         text: '',
     });
+
     const [search, setSearch] = useState('');
+
     useEffect(() => {
         dispatch(GetTodos({ search }));
     }, []);
+
     return (
         <>
             <div className="flex flex-col items-center justify-center gap-6">

@@ -8,6 +8,7 @@ user_routes.route("/signup").post(SignupUser);
 user_routes.route("/login").post(LoginUser);
 user_routes.route("/change-password").post(Authorize, ChangePassword)
 user_routes.route("/refresh").get(Authorize,GenerateNewAccessToken)
-user_routes.route("/logout").get(Authorize,LogoutUser)
+user_routes.route("/logout").get(Authorize,LogoutUser);
+
 
 export default user_routes
