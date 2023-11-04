@@ -1,3 +1,4 @@
+import { isValidObjectId } from "mongoose";
 import { TodosDb } from "../models/todo-schema.js";
 
 export async function GetTodos(req,res){
@@ -13,8 +14,27 @@ export async function GetTodos(req,res){
 
 export async function PostTodos(req,res){
     try{
-        const {description}=req.body;
-        await TodosDb.create({description})
+        const {description,id}=req.body;
+        console.log("id",id)
+        if(parseInt(id)===0){
+            await TodosDb.create({description})    
+            res.json({
+                message:"successfully created the new todos"
+            })
+        }else if(isValidObjectId(id)){
+            await TodosDb.updateOne({_id:id},{
+                $set:{
+                    description:description
+                }
+            })
+            res.json({
+                message:"successfully updated the todo"
+            })
+        }else{
+            res.status(300).json({
+                message:"id is not correct"
+            })
+        }
     }catch(err){
         console.error("Error",err)
     }
