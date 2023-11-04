@@ -7,6 +7,7 @@ import { connectDb } from "./src/config/db.js";
 import user_routes from "./src/routes/user-routes.js";
 import { Authorize } from "./src/middlewares/authorize-middleware.js";
 import todo_routes from "./src/routes/todo-routes.js";
+import test_routes from "./src/routes/test-routes.js";
 
 const app=express();
 
@@ -26,6 +27,7 @@ app.use(express.json());
 //! routes 
 app.use("/",user_routes);
 app.use("/",todo_routes)
+app.use("/",test_routes)
 
 app.get("/",(req,res)=>{
     res.send(`<h1>hello there</h1>`)
