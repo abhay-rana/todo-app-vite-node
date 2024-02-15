@@ -56,28 +56,6 @@
                 },
                 "ignore": ["\\.stories\\.js$"]
             }
-        ],
-        "unicorn/prevent-abbreviations": [
-            "error",
-            {
-                "replacements": {
-                    "e": {
-                        "event": false
-                    },
-                    "res": false,
-                    "cmd": {
-                        "command": true
-                    },
-                    "errCb": {
-                        "handleError": true
-                    },
-                    "i": {
-                        "item": true
-                    },
-                    "props": false,
-                    "env": false
-                }
-            }
         ]
     },
     "plugins": ["react", "unused-imports", "unicorn"],

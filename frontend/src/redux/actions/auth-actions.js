@@ -1,4 +1,5 @@
 import { createAsyncThunk } from '@reduxjs/toolkit';
+import { LOGIN } from '~/constant/api-constant';
 
 import { getApi, postApi } from '~/services/api-services';
 
@@ -6,20 +7,17 @@ import { removeToken, setToken } from '~/utils/set-tokens';
 
 import Alertify from '~/scripts/alertify';
 
-export const userSignIn = createAsyncThunk(
-    'login/user',
-    async ({ email, password }) => {
-        return postApi('/login', { email, password })
-            .then((data) => {
-                console.log('data', data);
-                setToken(data.data.token, data.data.refresh_token);
-                Alertify.success('User successfully logged in');
-            })
-            .catch((error) => {
-                console.error('err', error);
-                Alertify.error(error.message);
-                return Promise.reject();
-            });
+export const UserSignIn = createAsyncThunk(
+    'UserSignIn',
+    async ({ ...payload }, { dispatch, getState }) => {
+        try {
+            const res = await postApi(LOGIN, { ...payload });
+            return { res };
+        } catch (error) {
+            console.error(error);
+            Alertify.error(error.message[0]);
+            return Promise.reject();
+        }
     }
 );
 
