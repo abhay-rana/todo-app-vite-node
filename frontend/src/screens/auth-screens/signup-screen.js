@@ -1,9 +1,5 @@
 const SignupScreen = () => {
-    return (
-        <>
-            <div>Sign up screen</div>
-        </>
-    );
+    return <></>;
 };
 
 export default SignupScreen;
