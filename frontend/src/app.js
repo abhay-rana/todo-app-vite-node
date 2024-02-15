@@ -1,5 +1,6 @@
 import { useEffect } from 'react';
 import { useLocation } from 'wouter';
+import { AUTH_ROUTES } from '~/constant/routes-constant';
 import useAppSelector from '~/hook/useAppSelector';
 
 import AuthRoutes from '~/routes/auth-routes';
@@ -14,12 +15,7 @@ const App = () => {
     }));
 
     useEffect(() => {
-        if (!store.is_login) {
-            setLocation('/login');
-        } else if (
-            store.is_login &&
-            (location === '/' || location === '/login')
-        ) {
+        if (store.is_login && AUTH_ROUTES.includes(location)) {
             setLocation('/home');
         }
     }, [store.is_login]);
