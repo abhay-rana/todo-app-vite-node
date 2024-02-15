@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { useDispatch } from 'react-redux';
+import { Link } from 'wouter';
 
 import { UserSignIn } from '~/redux/actions/auth-actions';
 
@@ -35,6 +36,9 @@ const LoginScreen = () => {
                 <button className="bg-warning p-4" onClick={handleSignIn}>
                     Sign in
                 </button>
+                <div className="bg-green-300 p-4 text-center">
+                    <Link to="/signup">Sign up</Link>
+                </div>
             </div>
         </>
     );

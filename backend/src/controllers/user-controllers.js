@@ -5,13 +5,21 @@ import { JWT_REFRESH_TOKEN, JWT_TOKEN } from "../../env.js";
 
 export async function SignupUser(req,res){
     try{
-        const {username,password,email}=req.body;
-        console.log("hello",{username,password})
+        const {username,password,confirm_password,email}=req.body;
+        if(password===confirm_password){
+console.log("hello",{username,password})
         const hash_password= await bcrypt.hash(password,10)
          UserDb.create({username,email,password:hash_password});
-       return res.json({
+         return res.json({
             message:"user is created"
         })
+        }else{
+              return res.status(401).json({
+                    message: "Wrong Password"
+                })
+        }
+        
+       
     }
     catch(error){
         console.error("error",error)

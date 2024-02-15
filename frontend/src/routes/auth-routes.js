@@ -1,6 +1,7 @@
 import { Route, Router, Switch } from 'wouter';
 
 import LoginScreen from '~/screens/auth-screens/login-screen';
+import SignupScreen from '~/screens/auth-screens/signup-screen';
 
 // import LoginScreen from '~/screens/login-screen';
 // import SignupScreen from '~/screens/signup-screen';
@@ -12,8 +13,9 @@ const AuthRoutes = () => {
             <Router>
                 <Switch>
                     <Route path="/login" component={LoginScreen} />
-                    {/*
                     <Route path="/signup" component={SignupScreen} />
+                    {/*
+                    
                     <Route
                         path="/reset-password"
                         component={ResetPasswordScreen}
