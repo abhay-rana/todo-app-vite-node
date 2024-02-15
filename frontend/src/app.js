@@ -1,34 +1,33 @@
 import { useEffect } from 'react';
-import { connect } from 'react-redux';
 import { useLocation } from 'wouter';
+import useAppSelector from '~/hook/useAppSelector';
 
 import AuthRoutes from '~/routes/auth-routes';
-import Routes from '~/routes/routes';
+import MainRoutes from '~/routes/main-routes';
 
 import Container from '~/components/container/container';
 
-const App = (props) => {
+const App = () => {
     const [location, setLocation] = useLocation();
+    const store = useAppSelector((state) => ({
+        is_login: state.auth_store.is_login,
+    }));
 
     useEffect(() => {
-        if (!props.is_login) {
+        if (!store.is_login) {
             setLocation('/login');
-        } else if (props.is_login && location === '/') {
+        } else if (store.is_login && location === '/') {
             setLocation('/home');
         }
-    }, [props.is_login]);
+    }, [store.is_login]);
 
     return (
         <>
-            <Container is_login={props.is_login}>
-                {!props.is_login ? <AuthRoutes /> : <Routes />}
+            <Container is_login={store.is_login}>
+                {!store.is_login ? <AuthRoutes /> : <MainRoutes />}
             </Container>
         </>
     );
 };
 
-const mapStateToProps = (state) => ({
-    is_login: state.auth_store.is_login,
-});
-
-export default connect(mapStateToProps, null)(App);
+export default App;

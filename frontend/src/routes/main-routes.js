@@ -1,13 +1,11 @@
 import React from 'react';
 import { Route, Router, Switch } from 'wouter';
 
-const HomeScreen = React.lazy(() => import('~/screens/home-screen'));
-const ChangePasswordScreen = React.lazy(() =>
-    import('~/screens/change-password-screen')
-);
+import HomeScreen from '~/screens/main-screens/home-screen';
+
 const ErrorScreen = React.lazy(() => import('~/components/container/404'));
 
-const Routes = () => {
+const MainRoutes = () => {
     return (
         <Router>
             <React.Suspense fallback={<h1>Loading....</h1>}>
@@ -22,4 +20,4 @@ const Routes = () => {
     );
 };
 
-export default Routes;
+export default MainRoutes;
