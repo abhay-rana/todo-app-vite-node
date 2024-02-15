@@ -1,17 +1,20 @@
 import { useState } from 'react';
 import { useDispatch } from 'react-redux';
-import { Link } from 'wouter';
+import { Link, useLocation } from 'wouter';
 
 import { UserSignIn } from '~/redux/actions/auth-actions';
 
 const LoginScreen = () => {
     const dispatch = useDispatch();
+    const [, setLocation] = useLocation();
     const [cred, setCred] = useState({
         email: '',
         password: '',
     });
     function handleSignIn() {
-        dispatch(UserSignIn({ email: cred.email, password: cred.password }));
+        dispatch(UserSignIn({ email: cred.email, password: cred.password }))
+            .unwrap()
+            .then(() => setLocation('/home'));
     }
     return (
         <>

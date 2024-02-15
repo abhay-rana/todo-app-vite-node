@@ -1,4 +1,5 @@
 import { createSlice } from '@reduxjs/toolkit';
+
 import { ResetLocalState } from '~/redux/slices/container-reducer';
 
 const initialState = {
@@ -83,5 +84,5 @@ const counterSlice = createSlice({
     },
 });
 
-export const { AddTodo, DeleteTodo } = counterSlice.actions;
+export const { AddTodo } = counterSlice.actions;
 export default counterSlice.reducer;

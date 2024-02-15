@@ -13,13 +13,13 @@ const App = () => {
         is_login: state.auth_store.is_login,
     }));
 
-    useEffect(() => {
-        if (!store.is_login) {
-            setLocation('/login');
-        } else if (store.is_login && location === '/') {
-            setLocation('/home');
-        }
-    }, [store.is_login]);
+    // useEffect(() => {
+    //     if (!store.is_login) {
+    //         setLocation('/login');
+    //     } else if (store.is_login && location === '/') {
+    //         setLocation('/home');
+    //     }
+    // }, [store.is_login]);
 
     return (
         <>

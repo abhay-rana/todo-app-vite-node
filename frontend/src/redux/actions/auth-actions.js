@@ -1,5 +1,5 @@
 import { createAsyncThunk } from '@reduxjs/toolkit';
-import { LOGIN } from '~/constant/api-constant';
+import { LOGIN, SIGN_UP } from '~/constant/api-constant';
 
 import { getApi, postApi } from '~/services/api-services';
 
@@ -54,3 +54,22 @@ export const ChangePasswordDatabase = createAsyncThunk(
             });
     }
 );
+
+export const UserSignup = createAsyncThunk(
+    'UserSignup',
+    async ({ ...payload }, { dispatch, getState }) => {
+        try {
+            const res = await postApi(SIGN_UP, { ...payload });
+            return { res };
+        } catch (error) {
+            console.error(error);
+            Alertify.error(error.message[0]);
+            return Promise.reject();
+        }
+    }
+);
+
+export function saveTokenToLocalStorage(token, refresh_token) {
+    window.localStorage.setItem('token', token);
+    window.localStorage.setItem('refresh_token', refresh_token);
+}
