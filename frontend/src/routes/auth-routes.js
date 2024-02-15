@@ -12,6 +12,18 @@ const AuthRoutes = () => {
                 <Switch>
                     <Route path="/login" component={LoginScreen} />
                     <Route path="/signup" component={SignupScreen} />
+                    <Route
+                        path="/reset-password"
+                        component={ResetPasswordScreen}
+                    />
+                    <Route
+                        path="/set-password"
+                        component={ResetPasswordScreen}
+                    />
+                    <Route
+                        path="/forgot-password"
+                        component={ResetPasswordScreen}
+                    />
                     <Route component={ErrorScreen} />
                 </Switch>
             </Router>
