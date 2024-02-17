@@ -3,13 +3,30 @@ import { TodosDb } from '../models/todo-schema.js';
 
 export async function GetTodos(req, res) {
     try {
-        const todos = await TodosDb.find({});
+        const page = parseInt(req.body.page) || 1;
+        const pageSize = parseInt(req.body.pageSize) || 10;
+        if (page < 1 || pageSize < 1) {
+            return res
+                .status(400)
+                .json({ message: 'Invalid page or pageSize value' });
+        }
+
+        const skip = (page - 1) * pageSize;
+        const todos = await TodosDb.find({}).skip(skip).limit(pageSize);
+        const total = await TodosDb.countDocuments();
+
+        const totalPages = Math.ceil(total / pageSize);
+
         return res.json({
-            message: 'get all toodos',
+            message: 'get all todos',
             data: todos,
+            count: total,
+            page: page,
+            totalPages: totalPages,
         });
     } catch (err) {
         console.error('err', err);
+        return res.status(500).json({ message: 'Internal Server Error' });
     }
 }
 
