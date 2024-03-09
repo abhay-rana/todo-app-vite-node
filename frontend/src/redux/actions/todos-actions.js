@@ -23,7 +23,7 @@ export const GetTodos = createAsyncThunk(
     'GetTodos',
     async ({ _ }, { dispatch, getState }) => {
         try {
-            const res = await getApi(GET_TODOS);
+            const res = await postApi(GET_TODOS);
             return { res };
         } catch (error) {
             console.error(error);

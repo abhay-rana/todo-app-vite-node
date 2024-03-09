@@ -24,7 +24,7 @@ const TodosWrapper = () => {
         dispatch(GetTodos({}))
             .unwrap()
             .then((data) => {
-                setTodos(data.res.data);
+                setTodos(data.res.data.data);
             });
         return () => {};
     }, []);
@@ -32,7 +32,7 @@ const TodosWrapper = () => {
     return (
         <>
             <div>TodosWrapper</div>
-            {todos.map((todo) => (
+            {todos?.map((todo) => (
                 <React.Fragment key={todo._id}>
                     <TodosCard {...{ todo, deleteTodo }} />
                 </React.Fragment>

@@ -3,8 +3,16 @@ import { TodosDb } from '../models/todo-schema.js';
 
 export async function GetTodos(req, res) {
     try {
+        const userId = req.user.id;
         const page = parseInt(req.body.page) || 1;
         const pageSize = parseInt(req.body.pageSize) || 10;
+        const search = req.body.search || '';
+
+        const baseQuery = { userId };
+        if (search) {
+            const regex = new RegExp(search, 'i');
+            baseQuery['description'] = regex;
+        }
         if (page < 1 || pageSize < 1) {
             return res
                 .status(400)
@@ -12,8 +20,10 @@ export async function GetTodos(req, res) {
         }
 
         const skip = (page - 1) * pageSize;
-        const todos = await TodosDb.find({}).skip(skip).limit(pageSize);
-        const total = await TodosDb.countDocuments();
+        const todos = await TodosDb.find(baseQuery, { userId: 0 })
+            .skip(skip)
+            .limit(pageSize);
+        const total = await TodosDb.countDocuments(baseQuery, { userId: 0 });
 
         const totalPages = Math.ceil(total / pageSize);
 
@@ -33,9 +43,13 @@ export async function GetTodos(req, res) {
 export async function PostTodos(req, res) {
     try {
         const { description, id, status, title } = req.body;
+        console.log('res-user', req.user);
         console.log('id', id);
         if (parseInt(id) === 0) {
-            const create = await TodosDb.create({ description });
+            const create = await TodosDb.create({
+                description,
+                userId: req.user.id,
+            });
             console.log('create', create);
             res.json({
                 message: 'successfully created the new todos',
