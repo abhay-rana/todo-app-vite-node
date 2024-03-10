@@ -21,6 +21,8 @@ const SignupScreen = () => {
     function handleOAuth(type) {
         if (type === 'google') {
             window.location.href = `${ProjectUrl}/auth/google`; // Redirect to the '/google' endpoint on the server
+        } else if (type === 'github') {
+            window.location.href = `${ProjectUrl}/auth/github`; // Redirect to the '/github' endpoint on the server
         }
     }
 
@@ -55,6 +57,12 @@ const SignupScreen = () => {
                         className="border bg-red-300 p-4"
                     >
                         Sign in with Google
+                    </button>
+                    <button
+                        onClick={() => handleOAuth('github')}
+                        className="border bg-yellow-300 p-4"
+                    >
+                        Sign in with Github
                     </button>
                 </div>
             </div>
