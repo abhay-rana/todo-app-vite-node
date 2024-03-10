@@ -3,7 +3,7 @@
 import passport from 'passport';
 import { Strategy as GoogleStrategy } from 'passport-google-oauth20';
 import { Strategy as GitHubStrategy } from 'passport-github2';
-import { UserDb } from '../models/user-schema';
+import { UserDb } from '../models/user-schema.js';
 
 // Google OAuth 2.0 configuration
 const googleConfig = {
@@ -25,13 +25,14 @@ const githubConfig = {
 async function handleUserDetails(profile) {
     try {
         // Check if user exists in database based on profile data (profile.id, profile.email, etc.)
-        let user = await UserDb.findOne({ githubId: profile.id });
+        let user = await UserDb.findOne({ socialId: profile.id });
 
         if (!user) {
             // If user doesn't exist, create new user record in database
             user = await UserDb.create({
                 socialId: profile.id,
-                username: profile.username,
+                username: profile._json.name,
+                email: profile._json.email,
             });
         }
 
