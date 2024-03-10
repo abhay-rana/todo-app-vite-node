@@ -8,7 +8,7 @@ import user_routes from './src/routes/user-routes.js';
 import { Authorize } from './src/middlewares/authorize-middleware.js';
 import todo_routes from './src/routes/todo-routes.js';
 import test_routes from './src/routes/test-routes.js';
-import passport from 'passport';
+import passport from './src/config/passport.js';
 
 const app = express();
 
