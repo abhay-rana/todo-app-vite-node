@@ -118,23 +118,13 @@ export async function ChangePassword(req, res) {
 
 export async function LogoutUser(req, res) {
     try {
-        fetch('https://oauth2.googleapis.com/revoke', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/x-www-form-urlencoded',
-            },
-            body: `token=${token}`,
-        })
-            .then((response) => {
-                // Handle response
-            })
-            .catch((error) => {
-                // Handle error
-            });
+        req.session = null;
+        req.logout();
         res.json({
             message: 'You are successfully logout',
         });
     } catch (err) {
         console.log(err);
+        console.log('=------>', err);
     }
 }

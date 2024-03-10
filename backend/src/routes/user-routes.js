@@ -17,7 +17,7 @@ user_routes.route('/signup').post(SignupUser);
 user_routes.route('/login').post(LoginUser);
 user_routes.route('/change-password').post(Authorize, ChangePassword);
 user_routes.route('/refresh').get(Authorize, GenerateNewAccessToken);
-user_routes.route('/logout').get(Authorize, LogoutUser);
+user_routes.route('/logout').get(LogoutUser);
 user_routes
     .route('/auth/google')
     .get(passport.authenticate('google', { scope: ['profile', 'email'] }));
@@ -38,12 +38,9 @@ user_routes.route('/auth/google/callback').get(
 
             // Set the user data in the request object
             req.userData = user;
-
             // const token=jwt.sign({id:user._id,username:user.username},JWT_TOKEN,{expiresIn: "30s"});
             const token = jwt.sign({ user }, JWT_TOKEN, { expiresIn: '1d' });
-
             console.log({ user });
-
             res.redirect(
                 `http://localhost:3000/oauth-redirecting?token=${token}`
             );
