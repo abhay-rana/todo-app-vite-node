@@ -1,4 +1,6 @@
 import express from 'express';
+import session from 'express-session';
+
 import cors from 'cors';
 import 'dotenv/config';
 import { PORT } from './env.js';
@@ -16,6 +18,15 @@ const app = express();
 connectDb();
 
 //!! middlewares
+
+// Use express-session middleware
+app.use(
+    session({
+        secret: 'your_session_secret',
+        resave: false,
+        saveUninitialized: false,
+    })
+);
 
 app.use(
     cors({

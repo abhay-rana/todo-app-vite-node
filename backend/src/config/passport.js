@@ -18,6 +18,7 @@ passport.use(
         profile,
         done
     ) {
+        console.log('asdjkansdk');
         // Callback function to handle user profile data
         return done(null, profile);
     })
