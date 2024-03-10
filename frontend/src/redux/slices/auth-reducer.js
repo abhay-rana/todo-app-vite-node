@@ -16,7 +16,12 @@ const initialState = {
 const authSlice = createSlice({
     name: 'auth',
     initialState,
-    reducers: {},
+    reducers: {
+        SetToken: (state, action) => {
+            state.token = action.payload.token;
+            state.is_login = true;
+        },
+    },
     extraReducers: (builder) => {
         builder.addCase(UserSignIn.fulfilled, (state, { payload }) => {
             state.is_login = true;
@@ -28,10 +33,12 @@ const authSlice = createSlice({
             );
         });
         builder.addCase(Logout.fulfilled, (state) => {
+            state.token = '';
+            state.refresh_token = '';
             state.is_login = false;
         });
     },
 });
 
-export const { setLogin } = authSlice.actions;
+export const { setLogin, SetToken } = authSlice.actions;
 export default authSlice.reducer;

@@ -21,6 +21,7 @@ user_routes.route('/logout').get(Authorize, LogoutUser);
 user_routes
     .route('/auth/google')
     .get(passport.authenticate('google', { scope: ['profile', 'email'] }));
+
 user_routes.route('/auth/google/callback').get(
     passport.authenticate('google', {
         failureRedirect: '/login',
@@ -44,7 +45,7 @@ user_routes.route('/auth/google/callback').get(
             console.log({ user });
 
             res.redirect(
-                `http://localhost:3000/OAuthRedirecting?token=${token}`
+                `http://localhost:3000/oauth-redirecting?token=${token}`
             );
 
             // Respond with JWT token
