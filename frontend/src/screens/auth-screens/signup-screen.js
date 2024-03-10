@@ -3,6 +3,8 @@ import { useDispatch } from 'react-redux';
 
 import { UserSignup } from '~/redux/actions/auth-actions';
 
+import { ProjectUrl } from '~/env';
+
 const SignupScreen = () => {
     const dispatch = useDispatch();
     const [cred, setCred] = useState({
@@ -16,6 +18,12 @@ const SignupScreen = () => {
     function handleRegister() {
         dispatch(UserSignup({ ...cred }));
     }
+    function handleOAuth(type) {
+        if (type === 'google') {
+            window.location.href = `${ProjectUrl}/auth/google`; // Redirect to the '/google' endpoint on the server
+        }
+    }
+
     return (
         <>
             <div className="text-center text-18">Sign up screen</div>
@@ -35,7 +43,20 @@ const SignupScreen = () => {
                     onChange={(e) => handleInputsChange('confirm_password', e)}
                     value={cred.confirm_password}
                 />
-                <button onClick={handleRegister}>Register</button>
+                <div className="flex flex-col gap-4">
+                    <button
+                        onClick={handleRegister}
+                        className="border bg-green-300 p-4"
+                    >
+                        Register
+                    </button>
+                    <button
+                        onClick={() => handleOAuth('google')}
+                        className="border bg-red-300 p-4"
+                    >
+                        Sign in with Google
+                    </button>
+                </div>
             </div>
         </>
     );
