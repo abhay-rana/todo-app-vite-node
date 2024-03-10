@@ -119,12 +119,10 @@ export async function ChangePassword(req, res) {
 export async function LogoutUser(req, res) {
     try {
         req.session = null;
-        req.logout();
         res.json({
             message: 'You are successfully logout',
         });
     } catch (err) {
-        console.log(err);
         console.log('=------>', err);
     }
 }
