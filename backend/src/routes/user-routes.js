@@ -9,7 +9,7 @@ import {
 } from '../controllers/user-controllers.js';
 import { Authorize } from '../middlewares/authorize-middleware.js';
 import passport from 'passport';
-import { JWT_TOKEN } from '../../env.js';
+import { BASE_FROTEND_URL, JWT_TOKEN } from '../../env.js';
 import { UserDb } from '../models/user-schema.js';
 
 const user_routes = express.Router();
@@ -37,13 +37,9 @@ user_routes.route('/auth/google/callback').get(
                 throw new Error('User not found');
             }
 
-            // Set the user data in the request object
-            req.userData = user;
-
-            const saved_user = await saveUser(user);
             const user_details = {
-                id: saved_user._id,
-                username: saved_user.name,
+                id: user._id,
+                username: user.username,
             };
 
             // const token=jwt.sign({id:user._id,username:user.username},JWT_TOKEN,{expiresIn: "30s"});
@@ -53,7 +49,7 @@ user_routes.route('/auth/google/callback').get(
 
             console.log({ user });
             res.redirect(
-                `http://localhost:3000/oauth-redirecting?token=${token}`
+                `${BASE_FROTEND_URL}/oauth-redirecting?token=${token}`
             );
 
             // Respond with JWT token
@@ -64,31 +60,5 @@ user_routes.route('/auth/google/callback').get(
         }
     }
 );
-
-// Save user data to database
-const saveUser = async (userData) => {
-    try {
-        // Check if user already exists in database
-        let user = await UserDb.findOne({ googleId: userData.id });
-
-        // If user doesn't exist, create a new user
-        if (!user) {
-            user = new UserDb({
-                googleId: userData.id,
-                email: userData._json.email,
-                name: userData._json.name,
-                photoUrl: userData._json.picture,
-                // Set other fields as needed
-            });
-            await user.save();
-        }
-
-        // Return the user object
-        return user;
-    } catch (error) {
-        console.error('Error saving user:', error);
-        throw error;
-    }
-};
 
 export default user_routes;

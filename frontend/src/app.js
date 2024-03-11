@@ -17,6 +17,8 @@ const App = () => {
     useEffect(() => {
         if (store.is_login && AUTH_ROUTES.includes(location)) {
             setLocation('/home');
+        }else{
+            setLocation('/login');
         }
     }, [store.is_login]);
 

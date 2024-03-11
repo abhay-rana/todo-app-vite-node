@@ -1,102 +1,96 @@
-// passport.js
-
 import passport from 'passport';
 import { Strategy as GoogleStrategy } from 'passport-google-oauth20';
 import { Strategy as GitHubStrategy } from 'passport-github2';
 import { UserDb } from '../models/user-schema.js';
 
-// Google OAuth 2.0 configuration
 const googleConfig = {
     clientID: process.env.GOOGLE_CLIENT_ID,
     clientSecret: process.env.GOOGLE_CLIENT_SECRET,
     callbackURL: 'http://localhost:8000/auth/google/callback',
-    passReqToCallback: true,
 };
 
-// GitHub OAuth configuration
 const githubConfig = {
     clientID: process.env.GITHUB_CLIENT_ID,
     clientSecret: process.env.GITHUB_CLIENT_SECRET,
     callbackURL: 'http://localhost:8000/auth/github/callback',
-    passReqToCallback: true,
 };
 
-// Common function to handle user details
-async function handleUserDetails(profile) {
-    try {
-        // Check if user exists in database based on profile data (profile.id, profile.email, etc.)
-        let user = await UserDb.findOne({ socialId: profile.id });
+// const facebookConfig = {
+//     clientID: process.env.FACEBOOK_APP_ID,
+//     clientSecret: process.env.FACEBOOK_APP_SECRET,
+//     callbackURL: 'http://localhost:8000/auth/facebook/callback',
+//     profileFields: ['id', 'emails', 'name'], // Request fields from Facebook
+// };
 
-        if (!user) {
-            // If user doesn't exist, create new user record in database
-            user = await UserDb.create({
-                socialId: profile.id,
-                username: profile._json.name,
-                email: profile._json.email,
-            });
-        }
+async function findOrCreateUser(profile) {
+    let user = await UserDb.findOne({ socialLoginId: profile.id });
 
-        // Retrieve user record from database
-        user = await UserDb.findById(profile.id);
-
-        return user;
-    } catch (error) {
-        console.log(error);
-        throw error; // Handle error appropriately
+    if (!user) {
+        user = new UserDb({
+            socialLoginId: profile.id,
+            username: profile.displayName, // Changed to use profile.displayName
+            email: profile.emails[0].value, // Changed to get the primary email
+            method: profile.provider, // Storing the provider for distinguishing between Google and GitHub
+        });
+        await user.save();
     }
+
+    return user;
 }
 
-//! This functions of the passport will be triggered when these /auth/github/callback triggered
-
 passport.use(
-    new GoogleStrategy(googleConfig, async function (
-        request,
-        accessToken,
-        refreshToken,
-        profile,
-        done
-    ) {
-        try {
-            // Handle user details
-            const user = await handleUserDetails(profile);
-
-            // Pass user to done callback
-            done(null, user);
-        } catch (error) {
-            done(error); // Pass error to done callback
+    new GoogleStrategy(
+        googleConfig,
+        async (request, accessToken, refreshToken, profile, done) => {
+            try {
+                const user = await findOrCreateUser(profile);
+                done(null, user);
+            } catch (error) {
+                done(error);
+            }
         }
-    })
+    )
 );
 
-// GitHub strategy
 passport.use(
-    new GitHubStrategy(githubConfig, async function (
-        request,
-        accessToken,
-        refreshToken,
-        profile,
-        done
-    ) {
-        try {
-            // Handle user details
-            const user = await handleUserDetails(profile);
-
-            // Pass user to done callback
-            done(null, user);
-        } catch (error) {
-            done(error); // Pass error to done callback
+    new GitHubStrategy(
+        githubConfig,
+        async (request, accessToken, refreshToken, profile, done) => {
+            try {
+                const user = await findOrCreateUser(profile);
+                done(null, user);
+            } catch (error) {
+                done(error);
+            }
         }
-    })
+    )
 );
 
+// passport.use(
+//     new FacebookStrategy(
+//         facebookConfig,
+//         async (accessToken, refreshToken, profile, done) => {
+//             try {
+//                 // profile.id will be the unique identifier for the user
+//                 const user = await findOrCreateUser({
+//                     id: profile.id,
+//                     displayName: profile.displayName,
+//                     emails: profile.emails,
+//                     provider: 'facebook',
+//                 });
+//                 done(null, user);
+//             } catch (error) {
+//                 done(error);
+//             }
+//         }
+//     )
+// );
 passport.serializeUser((user, done) => {
-    // Serialize user data
-    done(null, user);
+    done(null, user._id); // Serialize user by ID
 });
 
-passport.deserializeUser((user, done) => {
-    // Deserialize user data
-    done(null, user);
+passport.deserializeUser((id, done) => {
+    UserDb.findById(id, (err, user) => done(err, user)); // Deserialize user from ID
 });
 
 export default passport;
