@@ -10,12 +10,14 @@ const Container = ({ children, is_login }) => {
             {!is_login ? (
                 <>
                     {/* auth routes */}
+                    <Header />
                     {children}
+                    <Footer />
                 </>
             ) : (
                 <>
                     {/* App routes */}
-                    <Header />
+                    <Sidebar />
                     {children}
                 </>
             )}

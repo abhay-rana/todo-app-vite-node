@@ -1,5 +1,5 @@
 import { useEffect } from 'react';
-import { useLocation } from 'wouter';
+import { Route, Router, Switch, useLocation } from 'wouter';
 import { AUTH_ROUTES } from '~/constant/routes-constant';
 import useAppSelector from '~/hook/useAppSelector';
 
@@ -25,7 +25,14 @@ const App = () => {
     return (
         <>
             <Container is_login={store.is_login}>
-                {!store.is_login ? <AuthRoutes /> : <MainRoutes />}
+                <Router>
+                    <Switch>
+                        {!store.is_login ? <AuthRoutes /> : <MainRoutes />}
+                        {/* Common Routes */}
+                        <Route path="/login" component={'LoginScreen'} />
+                        <Route component={'ErrorScreen'} />
+                    </Switch>
+                </Router>
             </Container>
         </>
     );
