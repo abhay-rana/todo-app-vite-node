@@ -12,12 +12,11 @@ const Container = ({ children, is_login }) => {
                     {/* auth routes */}
                     <Header />
                     {children}
-                    <Footer />
                 </>
             ) : (
                 <>
                     {/* App routes */}
-                    <Sidebar />
+
                     {children}
                 </>
             )}

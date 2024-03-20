@@ -11,15 +11,10 @@ import ErrorScreen from '~/components/container/404';
 const AuthRoutes = () => {
     return (
         <>
-            <Router>
-                <Switch>
-                    <Route path="/login" component={LoginScreen} />
-                    <Route path="/signup" component={SignupScreen} />
-                    <Route
-                        path="/oauth-redirecting"
-                        component={RedirectingScreen}
-                    />
-                    {/*
+            <Route path="/login" component={LoginScreen} />
+            <Route path="/signup" component={SignupScreen} />
+            <Route path="/oauth-redirecting" component={RedirectingScreen} />
+            {/*
                     
                     <Route
                         path="/reset-password"
@@ -33,9 +28,7 @@ const AuthRoutes = () => {
                         path="/forgot-password"
                         component={ResetPasswordScreen}
                     /> */}
-                    <Route component={ErrorScreen} />
-                </Switch>
-            </Router>
+            <Route component={ErrorScreen} />
         </>
     );
 };
