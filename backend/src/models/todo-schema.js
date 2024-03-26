@@ -9,6 +9,7 @@ const todoSchema = new mongoose.Schema({
         type: mongoose.Schema.Types.ObjectId,
         required: true,
     },
+    status: Boolean,
 });
 
 export const TodosDb = mongoose.model('todos', todoSchema);

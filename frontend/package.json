@@ -17,7 +17,7 @@
         "clean": "rm -rf node_modules yarn.lock && yarn cache clean",
         "storybook": "storybook dev -p 6006",
         "build-storybook": "storybook build",
-        "vercel": "vercel --prod",
+        "vercel": "vercel",
         "depcheck": "npx npm-check",
         "prepare": "husky install"
     },

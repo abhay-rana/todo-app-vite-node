@@ -48,6 +48,7 @@ export async function PostTodos(req, res) {
         if (parseInt(id) === 0) {
             const create = await TodosDb.create({
                 description,
+                status: status || false,
                 userId: req.user.id,
             });
             console.log('create', create);
@@ -85,6 +86,28 @@ export async function DeleteTodos(req, res) {
             message: 'successfully deleted',
             data: delete_todo,
         });
+    } catch (err) {
+        console.log(err);
+    }
+}
+
+export async function UpdateTodos(req, res) {
+    try {
+        const id = req.params.id;
+        const updated_one = await TodosDb.updateOne(
+            { _id: id },
+            {
+                $set: {
+                    status: req.body.status,
+                },
+            }
+        );
+        setTimeout(() => {
+            res.json({
+                message: 'successfully updated',
+                data: updated_one,
+            });
+        }, 2000);
     } catch (err) {
         console.log(err);
     }

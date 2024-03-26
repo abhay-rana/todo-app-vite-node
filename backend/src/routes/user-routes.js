@@ -51,9 +51,6 @@ user_routes.route('/auth/google/callback').get(
             res.redirect(
                 `${BASE_FROTEND_URL}/oauth-redirecting?token=${token}`
             );
-
-            // Respond with JWT token
-            res.json({ token });
         } catch (error) {
             console.log('cant get the url', error);
             res.status(500).json({ error: error.message });

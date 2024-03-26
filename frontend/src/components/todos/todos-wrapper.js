@@ -1,42 +1,56 @@
-import React, { memo, useCallback, useEffect, useState } from 'react';
-import { useDispatch } from 'react-redux';
+import React, { memo, useCallback, useState } from 'react';
 
 import TodosCard from '~/components/todos/todos-card';
 
-import { DeleteTodo, GetTodos } from '~/redux/actions/todos-actions';
+import {
+    useDeleteTodoMutation,
+    useGetTodosQuery,
+    useLazyGetTodosQuery,
+    useUpdateTodoMutation,
+} from '~/redux/actions/todos-services';
 
 const TodosWrapper = () => {
-    const [todos, setTodos] = useState([]);
+    const [search, setSearch] = useState('');
+    const { data, isLoading, isSuccess, isError, refetch } = useGetTodosQuery(
+        {
+            search: '',
+            page: 1,
+            pageSize: 10,
+        },
+        { refetchOnMountOrArgChange: true }
+    );
+    const [trigger, result, lastPromiseInfo] = useLazyGetTodosQuery();
+    console.log({ trigger, result, lastPromiseInfo });
 
-    const dispatch = useDispatch();
+    const [DeleteTodo] = useDeleteTodoMutation();
+    const [UpdateTodos] = useUpdateTodoMutation();
 
     const deleteTodo = useCallback((id) => {
-        dispatch(DeleteTodo({ id }))
-            .unwrap()
-            .then(({ id }) => {
-                setTodos((todos) => todos.filter((item) => item._id !== id));
-            });
+        DeleteTodo({ id }).unwrap();
     }, []);
 
-    function editTodo(id) {}
+    function updateTodos(id, status) {
+        return UpdateTodos({ id, status }).unwrap();
+    }
 
-    useEffect(() => {
-        dispatch(GetTodos({}))
-            .unwrap()
-            .then((data) => {
-                setTodos(data.res.data.data);
-            });
-        return () => {};
-    }, []);
+    console.log({ data, isLoading, isSuccess, isError });
 
     return (
         <>
             <div>TodosWrapper</div>
-            {todos?.map((todo) => (
-                <React.Fragment key={todo._id}>
-                    <TodosCard {...{ todo, deleteTodo }} />
-                </React.Fragment>
-            ))}
+            <input
+                placeholder="search the todos"
+                value={search}
+                onChange={(e) => setSearch(e.target.value)}
+            />
+            {isSuccess &&
+                data.data?.map((todo) => (
+                    <React.Fragment key={todo._id}>
+                        <TodosCard {...{ todo, deleteTodo, updateTodos }} />
+                    </React.Fragment>
+                ))}
+            {/* this is a load more component on change the page and the pageSize refetch the useEffect */}
+            {/* <LoadMore/> */}
         </>
     );
 };

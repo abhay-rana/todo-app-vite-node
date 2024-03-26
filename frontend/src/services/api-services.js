@@ -101,3 +101,12 @@ export const getApi = async (path) => {
         return handleApiError(error);
     }
 };
+
+export const patchApi = async (path) => {
+    try {
+        const response = await api.patch(path);
+        return response.data;
+    } catch (error) {
+        return handleApiError(error);
+    }
+};

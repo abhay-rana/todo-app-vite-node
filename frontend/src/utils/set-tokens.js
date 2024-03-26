@@ -7,3 +7,7 @@ export function removeToken() {
     window.localStorage.removeItem('token');
     window.localStorage.removeItem('refresh_token');
 }
+
+export function getToken() {
+    return window.localStorage.getItem('token');
+}

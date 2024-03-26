@@ -20,6 +20,7 @@ const authSlice = createSlice({
         SetToken: (state, action) => {
             state.token = action.payload.token;
             state.is_login = true;
+            saveTokenToLocalStorage(action.payload.token, null);
         },
     },
     extraReducers: (builder) => {
