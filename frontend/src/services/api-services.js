@@ -15,17 +15,8 @@ import { ProjectUrl } from '~/env';
 //! 404 Not Found    -> endpoint does not exist
 //! 500 Internal Server Error  -> error from the server side
 
-// Create a cancel token source
-const cancelTokenSource = axios.CancelToken.source();
-
-// Function to cancel ongoing requests
-export const cancelOngoingRequests = () => {
-    cancelTokenSource.cancel('Request canceled');
-};
-
 const api = axios.create({
     baseURL: ProjectUrl,
-    cancelToken: cancelTokenSource.token, // Set the cancel token for all requests
 });
 
 const handleLogout = () => {
@@ -40,15 +31,15 @@ const handleLogout = () => {
 
 const handleApiError = (error) => {
     if (
-        error.response &&
-        (error.response.status === 401 || error.response.status === 403)
+        error?.response &&
+        (error?.response?.status === 401 || error?.response?.status === 403)
     ) {
         handleLogout();
         return Promise.reject(error.response.data);
     }
-    console.log('error', error.response.data);
+    console.log('error', error?.response?.data);
     // Handle other errors as needed
-    return Promise.reject(error.response.data);
+    return Promise.reject(error?.response?.data);
 };
 
 api.interceptors.request.use(
@@ -70,7 +61,7 @@ api.interceptors.response.use(
     async function (error) {
         const originalRequest = error.config;
 
-        if (error.response.status === 403 && !originalRequest._retry) {
+        if (error?.response?.status === 403 && !originalRequest?._retry) {
             originalRequest._retry = true;
 
             try {
@@ -89,8 +80,8 @@ api.interceptors.response.use(
                 handleLogout();
             }
         } else if (
-            error.response.status === 401 ||
-            error.response.status === 403
+            error?.response?.status === 401 ||
+            error?.response?.status === 403
         ) {
             handleLogout();
         }
@@ -102,10 +93,11 @@ api.interceptors.response.use(
 export const postApi = async (
     path,
     data = {},
-    headers = { Accept: 'application/json' }
+    headers = { Accept: 'application/json' },
+    cancelToken
 ) => {
     try {
-        const response = await api.post(path, data, { headers });
+        const response = await api.post(path, data, { headers, cancelToken });
         return response;
     } catch (error) {
         return handleApiError(error);

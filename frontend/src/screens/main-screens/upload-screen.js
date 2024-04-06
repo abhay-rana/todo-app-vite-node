@@ -1,6 +1,10 @@
-import React, { memo, useEffect, useState } from 'react';
+import axios from 'axios';
+// Import axios here
+import { memo, useEffect, useState } from 'react';
+import { useDispatch } from 'react-redux';
+import useCancelToken from '~/hook/useCancelToken';
 
-import { cancelOngoingRequests, getApi } from '~/services/api-services';
+import { GetTodos } from '~/redux/actions/todos-actions';
 
 const UploadScreen = () => {
     const [show, setVisible] = useState(false);
@@ -26,16 +30,16 @@ const UploadScreen = () => {
 };
 
 const Product = () => {
+    const dispatch = useDispatch();
+
+    const { cancelToken, cancelRequest } = useCancelToken(); // Use the custom hook
+
     useEffect(() => {
-        async function getDetails() {
-            const { data } = await getApi(`/todos`);
-            console.group({ data });
-            return { data };
-        }
-        getDetails();
+        // Dispatch the action with cancelToken
+        dispatch(GetTodos({ cancelToken }));
+        // Cleanup function to cancel the request
         return () => {
-            console.log('unmount the components');
-            cancelOngoingRequests();
+            cancelRequest(); // Cancel the request when component unmounts
         };
     }, []);
 
