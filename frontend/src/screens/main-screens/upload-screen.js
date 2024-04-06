@@ -45,6 +45,21 @@ const Product = ({ search }) => {
         };
     }, [search]);
 
+    // useEffect(() => {
+    //     let ignore = true;
+    //     dispatch(GetTodos({ search }))
+    //         .unwrap()
+    //         .then((data) => {
+    //             console.log({ search, ignore });
+    //             if (ignore === true) {
+    //                 console.log({ data, search });
+    //             }
+    //         });
+    //     return () => {
+    //         ignore = false;
+    //     };
+    // }, [search]);
+
     return (
         <>
             <div>This is product</div>

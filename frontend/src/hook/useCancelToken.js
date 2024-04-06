@@ -36,3 +36,19 @@ export default useCancelToken;
 
 //     return <>{/* Your component JSX */}</>;
 // };
+
+//! how to handle the race condition inside the useEffect
+// useEffect(() => {
+//     let ignore = true;
+//     dispatch(GetTodos({ search }))
+//         .unwrap()
+//         .then((data) => {
+//             console.log({ search, ignore });
+//             if (ignore === true) {
+//                 console.log({ data, search });
+//             }
+//         });
+//     return () => {
+//         ignore = false;
+//     };
+// }, [search]);
