@@ -12,9 +12,17 @@ import Alertify from '~/scripts/alertify';
 
 export const GetTodos = createAsyncThunk(
     'GetTodos',
-    async ({ _, cancelToken }, { dispatch, getState }) => {
+    async (
+        { search = '', page = 1, pageSize = 10, cancelToken },
+        { dispatch, getState }
+    ) => {
         try {
-            const { data } = await postApi(GET_TODOS, {}, {}, cancelToken);
+            const { data } = await postApi(
+                GET_TODOS,
+                { search },
+                {},
+                cancelToken
+            );
             return { data };
         } catch (error) {
             console.error(error);

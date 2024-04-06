@@ -8,6 +8,7 @@ import { GetTodos } from '~/redux/actions/todos-actions';
 
 const UploadScreen = () => {
     const [show, setVisible] = useState(false);
+    const [value, setValue] = useState('');
     return (
         <>
             <div>UploadScreen</div>
@@ -18,30 +19,31 @@ const UploadScreen = () => {
             >
                 Toggle
             </button>
+            <input value={value} onChange={(e) => setValue(e.target.value)} />
 
             {/* Prroduct Component */}
             {show && (
                 <>
-                    <Product />
+                    <Product search={value} />
                 </>
             )}
         </>
     );
 };
 
-const Product = () => {
+const Product = ({ search }) => {
     const dispatch = useDispatch();
 
     const { cancelToken, cancelRequest } = useCancelToken(); // Use the custom hook
 
     useEffect(() => {
         // Dispatch the action with cancelToken
-        dispatch(GetTodos({ cancelToken }));
+        dispatch(GetTodos({ cancelToken, search }));
         // Cleanup function to cancel the request
         return () => {
             cancelRequest(); // Cancel the request when component unmounts
         };
-    }, []);
+    }, [search]);
 
     return (
         <>
