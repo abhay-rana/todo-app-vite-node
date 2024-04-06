@@ -1,13 +1,15 @@
 import { useState } from 'react';
 import { useDispatch } from 'react-redux';
+import { useLocation } from 'wouter';
 
 import TodosWrapper from '~/components/todos/todos-wrapper';
 
 import { CreateTodos } from '~/redux/actions/todos-actions';
-import { useCreateTodoMutation } from '~/redux/actions/todos-services';
+import { useCreateTodoMutation } from '~/redux/services/todos-services';
 
 const HomeScreen = () => {
     const dispatch = useDispatch();
+    const [_, setLocation] = useLocation();
     const [CreateTodos] = useCreateTodoMutation();
     const [inputs, setInputs] = useState({
         title: '',
@@ -50,6 +52,12 @@ const HomeScreen = () => {
                 </div>
                 <button onClick={handleCreateTodo} className="bg-green-300 p-3">
                     Create A Todo
+                </button>
+                <button
+                    onClick={() => setLocation('/upload')}
+                    className="bg-green-300 p-3"
+                >
+                    Redirect
                 </button>
             </div>
             <div className="text-center text-18">Get Todos</div>

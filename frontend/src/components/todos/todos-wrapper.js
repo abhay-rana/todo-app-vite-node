@@ -7,7 +7,7 @@ import {
     useGetTodosQuery,
     useLazyGetTodosQuery,
     useUpdateTodoMutation,
-} from '~/redux/actions/todos-services';
+} from '~/redux/services/todos-services';
 
 const TodosWrapper = () => {
     const [search, setSearch] = useState('');

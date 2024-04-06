@@ -5,6 +5,29 @@ import store from '~/redux/store';
 
 import { ProjectUrl } from '~/env';
 
+//* 2xx ->  Success
+//* 4xx ->  client side error
+//* 5xx ->  server side error
+//** Axios reject the response if the status code belongs to 5xx and 4xx */
+//! 401 Unauthorized -> you are not login
+//! 403 Forbidden    ->    you are login but not have permissions
+//! 400 Bad Request  -> error from client side check your arguments in body
+//! 404 Not Found    -> endpoint does not exist
+//! 500 Internal Server Error  -> error from the server side
+
+// Create a cancel token source
+const cancelTokenSource = axios.CancelToken.source();
+
+// Function to cancel ongoing requests
+export const cancelOngoingRequests = () => {
+    cancelTokenSource.cancel('Request canceled');
+};
+
+const api = axios.create({
+    baseURL: ProjectUrl,
+    cancelToken: cancelTokenSource.token, // Set the cancel token for all requests
+});
+
 const handleLogout = () => {
     const token = window.localStorage.getItem('token');
     if (token) {
@@ -27,10 +50,6 @@ const handleApiError = (error) => {
     // Handle other errors as needed
     return Promise.reject(error.response.data);
 };
-
-const api = axios.create({
-    baseURL: ProjectUrl,
-});
 
 api.interceptors.request.use(
     async (config) => {
@@ -102,9 +121,18 @@ export const getApi = async (path) => {
     }
 };
 
-export const patchApi = async (path) => {
+export const patchApi = async (path, data = {}) => {
     try {
-        const response = await api.patch(path);
+        const response = await api.patch(path, data);
+        return response.data;
+    } catch (error) {
+        return handleApiError(error);
+    }
+};
+
+export const deleteApi = async (path) => {
+    try {
+        const response = await api.delete(path);
         return response.data;
     } catch (error) {
         return handleApiError(error);

@@ -3,7 +3,7 @@ import { setupListeners } from '@reduxjs/toolkit/dist/query';
 import { persistReducer, persistStore } from 'redux-persist';
 import storage from 'redux-persist/lib/storage';
 
-import { todosApi } from '~/redux/actions/todos-services';
+import { todosApi } from '~/redux/services/todos-services';
 import authReducer from '~/redux/slices/auth-reducer';
 import containerReducer from '~/redux/slices/container-reducer';
 import todoReducer from '~/redux/slices/todo-reducer';
